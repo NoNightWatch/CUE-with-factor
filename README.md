@@ -27,6 +27,22 @@ pip install -r requirements.txt
 python simulate.py --config example_config.yaml --t_end 200 --dt_out 1 --outdir outputs --seed 0
 ```
 
+
+## Interactive UI (real-time updates)
+
+Run the Streamlit dashboard:
+
+```bash
+streamlit run app.py
+```
+
+UI behavior:
+- Pools and edges are editable in-place and simulation updates automatically after each change.
+- No need to click output to refresh results.
+- Output button supports selectable exports:
+  - current UI snapshot image (PNG)
+  - summary statistics (JSON)
+
 ## Config notes
 
 - If `settings.auto_edges: true`, generated default edges are created from pool type rules.
