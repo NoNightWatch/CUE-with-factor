@@ -1,0 +1,65 @@
+pools:
+  - name: LitterIn
+    type: input
+    C0: 0.0
+  - name: DOC
+    type: doc
+    C0: 100.0
+  - name: POM
+    type: pom
+    C0: 250.0
+  - name: MB
+    type: mb
+    C0: 10.0
+  - name: NEC
+    type: nec
+    C0: 40.0
+  - name: MAOM
+    type: maom
+    C0: 500.0
+
+settings:
+  auto_edges: true
+  include_optional_edges:
+    nec_to_co2: false
+    maom_to_co2: false
+    inert_pool: false
+
+theta:
+  constant:
+    T: 20.0
+    Moisture: 0.6
+    Plant: 0.2
+    Community: 0.1
+    Geology: 0.5
+  time_varying:
+    T_ramp: {t0: 0, t1: 100, v0: 20, v1: 30}
+    M_ramp: {t0: 0, t1: 100, v0: 0.6, v1: 0.4}
+
+# Optional explicit edge overrides or additions. These override generated defaults by (from,to).
+edges:
+  - from: DOC
+    to: MB
+    k0: 0.08
+    y0: 0.55
+    drivers:
+      T: {q10: 2.0, tref: 20.0}
+      M: {Mopt: 0.6, width: 0.25, floor: 0.1}
+      Y_M: {alpha: 0.03}
+      P: {coef: 0.2}
+      Mc: {coef: 0.3, y_shift: 0.02}
+      G: {beta: 0.0, gamma: 0.0}
+
+  - from: NEC
+    to: MAOM
+    k0: 0.05
+    y0: 0.6
+    drivers:
+      G: {beta: 0.6, gamma: 0.0}
+
+  - from: MAOM
+    to: DOC
+    k0: 0.01
+    y0: 0.35
+    drivers:
+      G: {beta: 0.0, gamma: 1.2}
